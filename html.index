@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Bisseção</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    input, button {
+      background: #111;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 10px;
+      margin: 5px;
+      font-family: monospace;
+    }
+    #log {
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      width: 80%;
+      border-top: 1px solid #555;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo da Bisseção</h1>
+  <p>Tente encontrar a raiz de f(x) = x² - 4 no intervalo [a, b]</p>
+  <label for="a">a:</label><input type="number" id="a" value="0">
+  <label for="b">b:</label><input type="number" id="b" value="5">
+  <button onclick="bissecao()">Fazer Iteração</button>
+  <div id="resultado"></div>
+  <div id="log"></div>
+
+  <script>
+    function f(x) {
+      return x * x - 4;
+    }
+
+    function bissecao() {
+      let a = parseFloat(document.getElementById('a').value);
+      let b = parseFloat(document.getElementById('b').value);
+      let fa = f(a);
+      let fb = f(b);
+
+      if (fa * fb > 0) {
+        document.getElementById('resultado').innerText = 'f(a) e f(b) têm o mesmo sinal. Escolha outro intervalo.';
+        return;
+      }
+
+      let m = (a + b) / 2;
+      let fm = f(m);
+
+      let log = document.getElementById('log');
+      log.innerHTML += `<p>Iteração: a=${a.toFixed(4)}, b=${b.toFixed(4)}, m=${m.toFixed(4)}, f(m)=${fm.toFixed(4)}</p>`;
+
+      if (Math.abs(fm) < 0.001) {
+        document.getElementById('resultado').innerText = `Raiz encontrada: x ≈ ${m.toFixed(4)}`;
+      } else {
+        if (fa * fm < 0) {
+          document.getElementById('b').value = m;
+        } else {
+          document.getElementById('a').value = m;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
